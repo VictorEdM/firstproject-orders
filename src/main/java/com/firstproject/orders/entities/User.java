@@ -1,5 +1,6 @@
 package com.firstproject.orders.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -43,6 +44,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
+    @JsonIgnore
     public List<Order> getOrders() {
         return orders;
     }
