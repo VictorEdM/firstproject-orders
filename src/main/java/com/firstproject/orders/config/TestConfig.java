@@ -3,6 +3,7 @@ package com.firstproject.orders.config;
 
 import com.firstproject.orders.entities.Order;
 import com.firstproject.orders.entities.User;
+import com.firstproject.orders.entities.enums.OrderStatus;
 import com.firstproject.orders.repositories.OrderRepository;
 import com.firstproject.orders.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,16 +58,19 @@ public class TestConfig implements CommandLineRunner {
         Order mariaFirstOrder = new Order(
                 null,
                 Instant.parse("2019-06-20T19:53:07Z"),
+                OrderStatus.PAID,
                 users.get(0)
         );
         Order alexFirstOrder = new Order(
                 null,
                 Instant.parse("2019-07-21T03:42:10Z"),
+                OrderStatus.WAITING_PAYMENT,
                 users.get(1)
         );
         Order mariaSecondOrder = new Order(
                 null,
                 Instant.parse("2019-07-22T15:21:22Z"),
+                OrderStatus.WAITING_PAYMENT,
                 users.get(0)
         );
 
