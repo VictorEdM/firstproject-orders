@@ -2,13 +2,12 @@ package com.firstproject.orders.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.firstproject.orders.entities.enums.OrderStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -17,7 +16,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_order")
-public class Order {
+public class Order implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

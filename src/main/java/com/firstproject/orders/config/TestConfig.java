@@ -1,11 +1,14 @@
 package com.firstproject.orders.config;
 
 
+import com.firstproject.orders.entities.Category;
 import com.firstproject.orders.entities.Order;
 import com.firstproject.orders.entities.User;
 import com.firstproject.orders.entities.enums.OrderStatus;
+import com.firstproject.orders.repositories.CategoryRepository;
 import com.firstproject.orders.repositories.OrderRepository;
 import com.firstproject.orders.repositories.UserRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +28,14 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public void run(String... args) throws Exception {
         List<User> users = createUser();
         List<Order> orders = createOrder(users);
+        List<Category> categories = createCategory();
 
     }
 
@@ -54,7 +61,7 @@ public class TestConfig implements CommandLineRunner {
         return users;
     }
 
-    public List<Order> createOrder(List<User> users) {
+    public List<Order> createOrder(@NotNull List<User> users) {
         Order mariaFirstOrder = new Order(
                 null,
                 Instant.parse("2019-06-20T19:53:07Z"),
@@ -77,5 +84,15 @@ public class TestConfig implements CommandLineRunner {
         List<Order> orders = Arrays.asList(mariaFirstOrder, alexFirstOrder, mariaSecondOrder);
         orderRepository.saveAll(orders);
         return orders;
+    }
+
+    public List<Category> createCategory() {
+        Category eletronics = new Category(null, "Eletronics");
+        Category books = new Category(null, "Books");
+        Category computers = new Category(null, "Computers");
+
+        List<Category> categories = Arrays.asList(eletronics, books, computers);
+        categoryRepository.saveAll(categories);
+        return categories;
     }
 }
