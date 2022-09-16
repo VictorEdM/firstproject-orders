@@ -3,10 +3,12 @@ package com.firstproject.orders.config;
 
 import com.firstproject.orders.entities.Category;
 import com.firstproject.orders.entities.Order;
+import com.firstproject.orders.entities.Product;
 import com.firstproject.orders.entities.User;
 import com.firstproject.orders.entities.enums.OrderStatus;
 import com.firstproject.orders.repositories.CategoryRepository;
 import com.firstproject.orders.repositories.OrderRepository;
+import com.firstproject.orders.repositories.ProductRepository;
 import com.firstproject.orders.repositories.UserRepository;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -31,10 +34,14 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Override
     public void run(String... args) throws Exception {
         List<User> users = createUser();
         List<Order> orders = createOrder(users);
+        List<Product> products = createProduct();
         List<Category> categories = createCategory();
 
     }
@@ -94,5 +101,47 @@ public class TestConfig implements CommandLineRunner {
         List<Category> categories = Arrays.asList(eletronics, books, computers);
         categoryRepository.saveAll(categories);
         return categories;
+    }
+
+    public List<Product> createProduct() {
+        Product lotr = new Product(
+                null,
+                "The Lord Of The Rings",
+                "Frodo and Sam goes on an adventure to save the middle earth from the dark forces of Sauron",
+                BigDecimal.valueOf(90.5),
+                ""
+        );
+        Product smartTv = new Product(
+                null,
+                "Smart TV",
+                "Smart television",
+                BigDecimal.valueOf(2190.0),
+                ""
+        );
+        Product macbookPro = new Product(
+                null,
+                "Macbook Pro",
+                "Apple laptop",
+                BigDecimal.valueOf(1250.0),
+                ""
+        );
+        Product pcGamer = new Product(
+                null,
+                "PC Gamer",
+                "Computer for playing games",
+                BigDecimal.valueOf(1200.0),
+                ""
+        );
+        Product railsForDummies = new Product(
+                null,
+                "Rails For Dummies",
+                "Introductory book about Ruby on Rails",
+                BigDecimal.valueOf(100.99),
+                ""
+        );
+
+        List<Product> products = Arrays.asList(lotr, smartTv, macbookPro, pcGamer, railsForDummies);
+        productRepository.saveAll(products);
+        return products;
     }
 }

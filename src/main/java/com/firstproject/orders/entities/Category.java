@@ -1,15 +1,15 @@
 package com.firstproject.orders.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
@@ -23,4 +23,13 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
+    @Transient
+    @ManyToMany
+    @Setter(AccessLevel.NONE)
+    private Set<Product> products = new HashSet<>();
+
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
