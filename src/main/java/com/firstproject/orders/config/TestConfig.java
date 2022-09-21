@@ -18,8 +18,7 @@ import org.springframework.context.annotation.Profile;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Configuration
 @Profile("test")
@@ -43,6 +42,7 @@ public class TestConfig implements CommandLineRunner {
         List<Order> orders = createOrder(users);
         List<Product> products = createProduct();
         List<Category> categories = createCategory();
+        addCategoryToProduct(products, categories);
 
     }
 
@@ -143,5 +143,42 @@ public class TestConfig implements CommandLineRunner {
         List<Product> products = Arrays.asList(lotr, smartTv, macbookPro, pcGamer, railsForDummies);
         productRepository.saveAll(products);
         return products;
+    }
+
+    public void addCategoryToProduct(List<Product> products, List<Category> categories) {
+        Product lotr = products.stream()
+                .filter(product -> product.getName().equals("The Lord Of The Rings"))
+                .findFirst().orElse(null);
+        Product smartTV = products.stream()
+                .filter(product -> product.getName().equals("Smart TV"))
+                .findFirst().orElse(null);
+        Product macBook = products.stream()
+                .filter(product -> product.getName().equals("Macbook Pro"))
+                .findFirst().orElse(null);
+        Product pcGamer = products.stream()
+                .filter(product -> product.getName().equals("PC Gamer"))
+                .findFirst().orElse(null);
+        Product railsForDummies = products.stream()
+                .filter(product -> product.getName().equals("Rails For Dummies"))
+                .findFirst().orElse(null);
+
+        Category eletronics = categories.stream()
+                .filter(category -> category.getName().equals("Eletronics"))
+                .findFirst().orElse(null);
+        Category books = categories.stream()
+                .filter(category -> category.getName().equals("Books"))
+                .findFirst().orElse(null);
+        Category computers = categories.stream()
+                .filter(category -> category.getName().equals("Computers"))
+                .findFirst().orElse(null);
+
+        lotr.getCategories().add(books);
+        smartTV.getCategories().add(eletronics);
+        smartTV.getCategories().add(computers);
+        macBook.getCategories().add(computers);
+        pcGamer.getCategories().add(computers);
+        railsForDummies.getCategories().add(books);
+
+        productRepository.saveAll(Arrays.asList(lotr, smartTV, macBook, pcGamer, railsForDummies));
     }
 }

@@ -1,9 +1,12 @@
 package com.firstproject.orders.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -30,9 +33,14 @@ public class Product implements Serializable {
     private BigDecimal price;
     private String imgUrl;
 
-    @Transient
+    // Creating join table (tb_product_category) between product and category
+    @JsonIgnore
     @ManyToMany
-    @JoinColumn(name = "category_id")
+    @JoinTable(
+            name = "tb_product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
     @Setter(AccessLevel.NONE)
     private Set<Category> categories = new HashSet<>();
 

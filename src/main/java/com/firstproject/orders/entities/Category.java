@@ -1,5 +1,6 @@
 package com.firstproject.orders.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,8 +24,9 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
-    @Transient
-    @ManyToMany
+    // Mapping category collection from product
+    @JsonIgnore
+    @ManyToMany(mappedBy = "categories")
     @Setter(AccessLevel.NONE)
     private Set<Product> products = new HashSet<>();
 
