@@ -1,15 +1,10 @@
 package com.firstproject.orders.config;
 
 
-import com.firstproject.orders.entities.Category;
-import com.firstproject.orders.entities.Order;
-import com.firstproject.orders.entities.Product;
-import com.firstproject.orders.entities.User;
+import com.firstproject.orders.entities.*;
 import com.firstproject.orders.entities.enums.OrderStatus;
-import com.firstproject.orders.repositories.CategoryRepository;
-import com.firstproject.orders.repositories.OrderRepository;
-import com.firstproject.orders.repositories.ProductRepository;
-import com.firstproject.orders.repositories.UserRepository;
+import com.firstproject.orders.repositories.*;
+import org.aspectj.weaver.ast.Or;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -36,6 +31,9 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     @Override
     public void run(String... args) throws Exception {
         List<User> users = createUser();
@@ -43,6 +41,7 @@ public class TestConfig implements CommandLineRunner {
         List<Product> products = createProduct();
         List<Category> categories = createCategory();
         addCategoryToProduct(products, categories);
+        List<OrderItem> orderItems = createOrderItem(orders, products);
 
     }
 
@@ -68,7 +67,7 @@ public class TestConfig implements CommandLineRunner {
         return users;
     }
 
-    public List<Order> createOrder(@NotNull List<User> users) {
+    public List<Order> createOrder(List<User> users) {
         Order mariaFirstOrder = new Order(
                 null,
                 Instant.parse("2019-06-20T19:53:07Z"),
@@ -180,5 +179,37 @@ public class TestConfig implements CommandLineRunner {
         railsForDummies.getCategories().add(books);
 
         productRepository.saveAll(Arrays.asList(lotr, smartTV, macBook, pcGamer, railsForDummies));
+    }
+
+    public List<OrderItem> createOrderItem(List<Order> orders, List<Product> products) {
+        OrderItem orderItem1 = new OrderItem(
+                orders.get(0),
+                products.get(0),
+                2,
+                products.get(0).getPrice()
+        );
+        OrderItem orderItem2 = new OrderItem(
+                orders.get(0),
+                products.get(2),
+                1,
+                products.get(2).getPrice()
+        );
+        OrderItem orderItem3 = new OrderItem(
+                orders.get(1),
+                products.get(2),
+                2,
+                products.get(2).getPrice()
+        );
+        OrderItem orderItem4 = new OrderItem(
+                orders.get(2),
+                products.get(4),
+                2,
+                products.get(4).getPrice()
+        );
+
+        List<OrderItem> orderItems = Arrays.asList(orderItem1, orderItem2, orderItem3, orderItem4);
+        orderItemRepository.saveAll(orderItems);
+
+        return orderItems;
     }
 }

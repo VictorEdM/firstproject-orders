@@ -2,17 +2,14 @@ package com.firstproject.orders.entities.pk;
 
 import com.firstproject.orders.entities.Order;
 import com.firstproject.orders.entities.Product;
-import lombok.Data;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Data
 @Embeddable
 public class OrderItemPK implements Serializable {
     @Serial
@@ -24,6 +21,22 @@ public class OrderItemPK implements Serializable {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     @Override
     public boolean equals(Object o) {
