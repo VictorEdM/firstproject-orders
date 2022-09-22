@@ -1,7 +1,6 @@
 package com.firstproject.orders.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.firstproject.orders.entities.enums.OrderStatus;
 
 import javax.persistence.*;
@@ -29,13 +28,15 @@ public class Order implements Serializable {
     private Instant moment;
     private Integer orderStatus;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
 
     @OneToMany(mappedBy = "id.order")
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private Set<OrderItem> items = new HashSet<>();
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order() {}
 
@@ -79,20 +80,27 @@ public class Order implements Serializable {
         this.client = client;
     }
 
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order order)) return false;
-        return Objects.equals(id, order.id) && Objects.equals(moment, order.moment) && Objects.equals(orderStatus, order.orderStatus) && Objects.equals(client, order.client) && Objects.equals(orderItems, order.orderItems);
+        return id.equals(order.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, moment, orderStatus, client, orderItems);
+        return Objects.hash(id);
     }
-
 }

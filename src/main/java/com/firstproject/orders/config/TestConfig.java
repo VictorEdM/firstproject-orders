@@ -42,6 +42,7 @@ public class TestConfig implements CommandLineRunner {
         List<Category> categories = createCategory();
         addCategoryToProduct(products, categories);
         List<OrderItem> orderItems = createOrderItem(orders, products);
+        List<Payment> payments = createPayment(orders);
 
     }
 
@@ -211,5 +212,18 @@ public class TestConfig implements CommandLineRunner {
         orderItemRepository.saveAll(orderItems);
 
         return orderItems;
+    }
+
+    public List<Payment> createPayment(List<Order> orders) {
+        Payment payment1 = new Payment(
+                null,
+                orders.get(0).getMoment().plusSeconds(60 * 60 * 2),
+                orders.get(0)
+        );
+        orders.get(0).setPayment(payment1);
+
+        List<Payment> payments = Arrays.asList(payment1);
+        orderRepository.saveAll(orders);
+        return payments;
     }
 }

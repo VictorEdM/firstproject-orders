@@ -1,6 +1,7 @@
 package com.firstproject.orders.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.firstproject.orders.entities.pk.OrderItemPK;
 
 import javax.persistence.EmbeddedId;
