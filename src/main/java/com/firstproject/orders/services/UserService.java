@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -49,9 +50,13 @@ public class UserService {
     }
 
     public User update(Long id, User userUpdated) {
-        User currentUser = repository.getReferenceById(id);
-        updateData(currentUser, userUpdated);
-        return repository.save(currentUser);
+        try {
+            User currentUser = repository.getReferenceById(id);
+            updateData(currentUser, userUpdated);
+            return repository.save(currentUser);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     public void updateData(User oldUser, User newUser) {
