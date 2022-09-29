@@ -10,14 +10,18 @@ import java.util.List;
 @Service
 public class OrderService {
 
+    private final OrderRepository repository;
+
     @Autowired
-    private OrderRepository orderRepository;
+    public OrderService(OrderRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Order> findAll() {
-        return orderRepository.findAll();
+        return repository.findAll();
     }
 
     public Order findById(Long id) {
-        return orderRepository.findById(id).get();
+        return repository.findById(id).get();
     }
 }

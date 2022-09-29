@@ -1,7 +1,6 @@
 package com.firstproject.orders.controllers;
 
 import com.firstproject.orders.entities.Product;
-import com.firstproject.orders.repositories.ProductRepository;
 import com.firstproject.orders.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +15,22 @@ import java.util.List;
 @RequestMapping(value = "/products")
 public class ProductController {
 
+    private final ProductService service;
+
     @Autowired
-    private ProductService productService;
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<Product>> findAll() {
-        List<Product> products = productService.findAll();
+        List<Product> products = service.findAll();
         return ResponseEntity.ok().body(products);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Product> findById(@PathVariable Long id) {
-        Product product = productService.findById(id);
+        Product product = service.findById(id);
         return ResponseEntity.ok().body(product);
     }
 }

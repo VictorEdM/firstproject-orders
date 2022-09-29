@@ -15,18 +15,22 @@ import java.util.List;
 @RequestMapping(value = "/orders")
 public class OrderController {
 
+    private final OrderService service;
+
     @Autowired
-    private OrderService orderService;
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<Order>> findAll() {
-        List<Order> orders = orderService.findAll();
+        List<Order> orders = service.findAll();
         return ResponseEntity.ok().body(orders);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Order> findById(@PathVariable Long id) {
-        Order order = orderService.findById(id);
+        Order order = service.findById(id);
         return ResponseEntity.ok().body(order);
     }
 }

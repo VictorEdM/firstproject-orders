@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping(value = "/users")
 public class UserController {
 
+    private final UserService service;
+
     @Autowired
-    private UserService service;
+    public UserController(UserService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<User>> findAll() {
@@ -39,7 +43,7 @@ public class UserController {
         return ResponseEntity.created(uri).body(userCreated);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
